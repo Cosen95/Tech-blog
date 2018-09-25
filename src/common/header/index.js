@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper } from './style';
+
+
 class Header extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            focus: false
+        }
+    }
+    handleInputFocus = ()=> {
+        this.setState({
+            focus: true
+        })
+    };
+    handleInputBlur = ()=> {
+        this.setState({
+            focus: false
+        })
+    }
     render(){
         return(<HeaderWrapper>
             <Logo />
@@ -9,16 +28,25 @@ class Header extends Component{
                 <NavItem className='left'>下载APP</NavItem>
                 <NavItem className='right'>登录</NavItem>
                 <NavItem className='right'>
-                    <i class="iconfont">&#xe636;</i>
+                    <i className="iconfont">&#xe636;</i>
                 </NavItem>
                 <SearchWrapper>
-                    <NavSearch></NavSearch>
-                    <i className="iconfont">&#xe6cf;</i>
+                    <CSSTransition
+                        in={this.state.focus}
+                        timeout={200}
+                        className="slide"
+                    >
+                        <NavSearch className={this.state.focus ? 'focus' : ''}
+                            onFocus={this.handleInputFocus}
+                            onBlur={this.handleInputBlur}
+                        ></NavSearch>
+                    </CSSTransition>
+                    <i className={this.state.focus ? 'focus iconfont' : 'iconfont'}>&#xe6cf;</i>
                 </SearchWrapper>
             </Nav>
             <Addition>
                 <Button className='writting'>
-                    <i class="iconfont">&#xe62b;</i>
+                    <i className="iconfont">&#xe62b;</i>
                     写文章
                 </Button>  
                 <Button className='reg'>注册</Button>
