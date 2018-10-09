@@ -1,5 +1,4 @@
 import axios from 'axios';
-import 'antd/dist/antd.css';
 import { Modal } from 'antd';
 
 export default class Axios{
