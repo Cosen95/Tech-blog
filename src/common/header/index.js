@@ -34,7 +34,10 @@ class Header extends Component{
             return(
                 <SearchInfo onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <SearchInfoTitle>热门搜索
-                    <SearchInfoSwitch onClick={() => handleSwitch(pageNo, totalPage)}>换一批</SearchInfoSwitch>
+                    <SearchInfoSwitch onClick={() => handleSwitch(pageNo, totalPage, this.spinIcon)}>
+                        <i ref={(icon) => {this.spinIcon = icon}} className="iconfont spin">&#xe851;</i>
+                        换一批
+                    </SearchInfoSwitch>
                     </SearchInfoTitle>
                     <SearchInfoList>
                         {serachList}
@@ -46,7 +49,7 @@ class Header extends Component{
         }
     }
     render(){
-        const { focus, handleInputBlur, handleInputFocus } = this.props;
+        const { focus, handleInputBlur, handleInputFocus, list } = this.props;
         return (
             <HeaderWrapper>
             <Logo />
@@ -64,11 +67,11 @@ class Header extends Component{
                         classNames="slide"
                     >
                         <NavSearch className={focus ? 'focus' : ''}
-                            onFocus={handleInputFocus}
+                            onFocus={()=>handleInputFocus(list)}
                             onBlur={handleInputBlur}
                         ></NavSearch>
                     </CSSTransition>
-                    <i className={focus ? 'focus iconfont' : 'iconfont'}>&#xe6cf;</i>
+                    <i className={focus ? 'focus iconfont zoom' : 'iconfont zoom'}>&#xe6cf;</i>
                     { this.getListArea() }
                     
                 </SearchWrapper>
@@ -98,8 +101,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleInputFocus() {
-            dispatch(actionCreators.getList());
+        handleInputFocus(list) {
+            console.log(list);
+            (list.size === 0) && dispatch(actionCreators.getList());
             dispatch(actionCreators.searchFocus());
         },
         handleInputBlur() {
@@ -111,7 +115,14 @@ const mapDispatchToProps = (dispatch) => {
         handleMouseLeave() {
             dispatch(actionCreators.handleMouseLeave());
         },
-        handleSwitch(pageNo, totalPage) {
+        handleSwitch(pageNo, totalPage, spin) {
+            let originAngle = spin.style.transform.replace(/[^0-9]/ig,'');
+            if(originAngle) {
+                originAngle = parseInt(originAngle, 10);
+            } else {
+                originAngle = 0;
+            }
+            spin.style.transform = 'rotate('+(originAngle+360)+'deg)'
             if (pageNo < totalPage) {
                 dispatch(actionCreators.handleSwitch(pageNo + 1));
             } else {
