@@ -4,7 +4,7 @@ import Topic from './components/Topic';
 import List from './components/List';
 import Recommend from './components/Recommend';
 import Writer from './components/Writer';
-import axios from '../../util/request';
+import { actionCreators } from './store'
 import {
     HomeWrapper,
     HomeLeft,
@@ -13,23 +13,7 @@ import {
 
 class Home extends Component{
     componentDidMount(){
-        axios.ajax({
-            url: '/home_list',
-            method: 'get',
-            data: {
-                params:{ id:333}
-            }
-       }).then((res) => {
-           console.log(res);
-           const result = res.data;
-           const action = {
-               type: 'init_home_data',
-               topicList: result.topicList,
-               articleList: result.articleList,
-               recommendList: result.recommendList
-           }
-           this.props.initHomeData(action);
-       })
+        this.props.initHomeData();        
     }
     render(){
         return(
@@ -49,7 +33,8 @@ class Home extends Component{
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    initHomeData(action) {
+    initHomeData() {
+        const action = actionCreators.getHomeInfo();
         dispatch(action);
     }
 })
