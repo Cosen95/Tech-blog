@@ -17,15 +17,15 @@ export const HomeLeft = styled.div`
 `;
 
 export const HomeRight = styled.div`
-    width: 240px;
+    width: 280px;
     float: right;
-    background:orange;
 `;
 
 export const TopicWrapper = styled.div`
     overflow: hidden;
     padding: 20px 0 10px 0;
     margin-left: -18px;
+    border-bottom: 1px solid #dcdcdc;
 `;
 
 export const TopicItem = styled.div`
@@ -47,4 +47,54 @@ export const TopicItem = styled.div`
         height: 32px;
         margin-right: 10px;
     }
+`;
+
+export const ListItem = styled.div`
+    padding: 20px 0;
+    border-bottom: 1px solid #dcdcdc;
+    overflow: hidden;
+    .list-pic {
+        display: block;
+        width: 125px;
+        height: 100px;
+        float: right;
+        border-radius: 10px;
+    }
+`;
+
+export const ListInfo = styled.div`
+    width: 500px;
+    float: left;
+    .title {
+        line-height: 27px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+    .desc {
+        font-size: 13px;
+        line-height: 24px;
+        color: #999;
+    }
+`;
+
+export const RecommendWrapper = styled.div`
+    margin: 30px 0;
+    width: 280px;
+`;
+
+export const RecommendItem = styled.div`
+    width: 280px;
+    height: 50px;
+    background: url(${(props) => props.imgUrl});
+    background-size: contain;
+`;
+
+export const WriterWrapper = styled.div`
+    width: 278px;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    height: 300px;
+    line-height: 300px;
+    text-align: center;
 `

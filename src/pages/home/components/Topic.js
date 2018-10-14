@@ -7,7 +7,7 @@ class Topic extends Component{
         return(
             <TopicWrapper>
                 {
-                    this.props.list.map((item) => {
+                    this.props.topicList.map((item) => {
                         return (
                             <TopicItem key={item.get('id')}>
                                 <img 
@@ -27,7 +27,7 @@ class Topic extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        list: state.getIn(['home', 'topicList'])
+        topicList: state.getIn(['home', 'topicList'])
     }
 }
 

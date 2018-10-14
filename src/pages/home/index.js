@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Topic from './components/Topic';
 import List from './components/List';
 import Recommend from './components/Recommend';
 import Writer from './components/Writer';
+import axios from '../../util/request';
 import {
     HomeWrapper,
     HomeLeft,
@@ -10,6 +12,25 @@ import {
 } from './style'
 
 class Home extends Component{
+    componentDidMount(){
+        axios.ajax({
+            url: '/home_list',
+            method: 'get',
+            data: {
+                params:{ id:333}
+            }
+       }).then((res) => {
+           console.log(res);
+           const result = res.data;
+           const action = {
+               type: 'init_home_data',
+               topicList: result.topicList,
+               articleList: result.articleList,
+               recommendList: result.recommendList
+           }
+           this.props.initHomeData(action);
+       })
+    }
     render(){
         return(
             <HomeWrapper>
@@ -27,4 +48,9 @@ class Home extends Component{
     }
 }
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+    initHomeData(action) {
+        dispatch(action);
+    }
+})
+export default connect(null, mapDispatchToProps)(Home);
