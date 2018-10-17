@@ -17,6 +17,7 @@ import { HeaderWrapper,
      SearchInfoItem } from './style';
 
 import { actionCreators } from './store';
+import { actionCreators as loginActionCreators } from '../../pages/login/store';
 
 class Header extends Component{
     getListArea() {
@@ -50,7 +51,7 @@ class Header extends Component{
         }
     }
     render(){
-        const { focus, handleInputBlur, handleInputFocus, list } = this.props;
+        const { focus, handleInputBlur, handleInputFocus, list, login, logOut } = this.props;
         return (
             <HeaderWrapper>
             <Link to='/'>
@@ -59,7 +60,11 @@ class Header extends Component{
             <Nav>
                 <NavItem className='left active'>首页</NavItem>
                 <NavItem className='left'>下载APP</NavItem>
-                <NavItem className='right'>登陆</NavItem>
+                {
+                    login ? <NavItem className='right' onClick={logOut}>退出</NavItem> : 
+                    <Link to='/login'><NavItem className='right'>登陆</NavItem></Link>
+                }
+                
                 <NavItem className='right'>
                     <i className="iconfont">&#xe636;</i>
                 </NavItem>
@@ -80,10 +85,12 @@ class Header extends Component{
                 </SearchWrapper>
             </Nav>
             <Addition>
-                <Button className='writting'>
-                    <i className="iconfont">&#xe62b;</i>
-                    写文章
-                </Button>  
+                <Link to='/write'>
+                    <Button className='writting'>
+                        <i className="iconfont">&#xe62b;</i>
+                        写文章
+                    </Button>  
+                </Link>
                 <Button className='reg'>注册</Button>
             </Addition>
         </HeaderWrapper>
@@ -98,6 +105,7 @@ const mapStateToProps = (state) => {
         pageNo: state.getIn(['header', 'pageNo']),
         mouseIn: state.getIn(['header', 'mouseIn']),
         totalPage: state.getIn(['header', 'totalPage']),
+        login: state.getIn(['login', 'login']),
         // focus: state.get('header').get('focus')
     }
 }
@@ -131,6 +139,9 @@ const mapDispatchToProps = (dispatch) => {
             } else {
                 dispatch(actionCreators.handleSwitch(1));
             }
+        },
+        logOut() {
+            dispatch(loginActionCreators.logout());
         }
     }
 }
