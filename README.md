@@ -2,8 +2,16 @@
 
 ## 基于react构建的博客
 
-### 项目依赖
-#### styled-components
+## 命令介绍
+1.`yarn`
+* 安装依赖
+2.`yarn run start`
+* 启动本地服务
+3.`yarn run build`
+* 项目打包
+
+## 项目依赖
+### styled-components
 官方网址：https://www.styled-components.com/
 
 1.styled-components 是什么？
@@ -120,7 +128,7 @@ const TomatoButton = Button.extend`
 
 ```
 
-#### Immutable.js
+### Immutable.js
 1.什么是Immutable？
 Immutable Data 就是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个新的 Immutable 对象。
 
@@ -180,9 +188,9 @@ console.log(arry[0]);
 4.更多
 参考文档：https://www.jianshu.com/p/0fa8c7456c15
 
-### react相关概念
+## react相关概念
 
-#### react生命周期
+### react生命周期
 **定义**
 
 生命周期函数指在某一个时刻组件会自动调用执行的函数
@@ -212,12 +220,12 @@ console.log(arry[0]);
 
  - **componentWillUnmount**:组件即将从页面中卸载时执行
 
-#### React Developer Tools安装及使用
+### React Developer Tools安装及使用
 React Developer Tools 是一款由 facebook 开发的有用的 Chrome浏览器扩展。通过它我们可以查看应用程序的 React 组件分层结构。
 点击 Chrome 的“菜单”->“更多工具”->“扩展程序”安装插件即可
 
-#### PropTypes与DefaultProps
-##### 使用 PropTypes 进行类型检查
+### PropTypes与DefaultProps
+#### 使用 PropTypes 进行类型检查
 React 有一些内置的类型检查功能。要检查组件的属性，你需要配置特殊的 propTypes 属性：
 ```
 import PropTypes from 'prop-types';
@@ -237,7 +245,7 @@ Greeting.propTypes = {
 ```
 PropTypes 包含一整套验证器，可用于确保你接收的数据是有效的。在这个示例中，我们使用PropTypes.string。当你给属性传递了无效值时，JavsScript 控制台将会打印警告。出于性能原因，propTypes 只在开发模式下进行检查。
 
-##### 属性默认值defaultProps
+#### 属性默认值defaultProps
 你可以通过配置 defaultProps 为 props定义默认值：
 ```
 class Greeting extends React.Component {
@@ -262,7 +270,7 @@ ReactDOM.render(
 ```
 defaultProps 用来确保 this.props.name 在父组件没有特别指定的情况下，有一个初始值。类型检查发生在 defaultProps 赋值之后，所以类型检查也会应用在 defaultProps 上面。
 
-#### Fragment
+### Fragment
 React还提供了一个组件，用于在没有外层父元素包裹的情况下渲染多个元素:
 ```
 import { Component, Fragment }from 'react';
@@ -281,7 +289,7 @@ class Greeting extends Component {
 
 ```
 
-#### 虚拟DOM
+### 虚拟DOM
 **原生实现**
 * state数据
 * JSX模板
@@ -316,7 +324,7 @@ class Greeting extends Component {
 * 比较原始虚拟DOM和新的虚拟DOM的区别，找到区别是span中的内容发生了改变（极大的提升了性能）
 * 直接操作DOM，改变span中的内容
 
-#### react-redux
+### react-redux
 **UI 组件**
 
 `React-Redux` 将所有组件分成两大类：`UI` 组件（`presentational component`）和容器组件（`container component`）。
@@ -444,7 +452,7 @@ ReactDOM.render(App, document.getElementById('root'));
 ```
 上面代码中，`Provider`在根组件外面包了一层，这样一来，`App`的所有子组件就默认都可以拿到`state`了。
 
-#### react中间件
+### react中间件
 **中间件的概念**
 
 为了理解中间件，让我们站在框架作者的角度思考问题：如果要添加功能，你会在哪个环节添加？
