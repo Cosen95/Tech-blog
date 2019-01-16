@@ -5,8 +5,10 @@
 ## 命令介绍
 1.`yarn`
 * 安装依赖
+
 2.`yarn run start`
 * 启动本地服务
+
 3.`yarn run build`
 * 项目打包
 
