@@ -3,6 +3,184 @@
 ## 基于react构建的博客
 
 ### 项目依赖
+#### styled-components
+官方网址：https://www.styled-components.com/
+
+1.styled-components 是什么？
+styled-components 是一个常用的 css in js 类库。和所有同类型的类库一样，通过 js 赋能解决了原生 css 所不具备的能力，比如变量、循环、函数等。
+
+2.相对于其他预处理有什么优点？
+* 诸如 sass&less 等预处理可以解决部分 css 的局限性，但还是要学习新的语法，而且需要对其编译，其复杂的 webpack 配置也总是让开发者抵触。
+* 如果有过sass&less的经验，也能很快的切换到styled-components，因为大部分语法都类似，比如嵌套，& 继承等， styled-componens 很好的解决了学习成本与开发环境问题，很适合 React 技术栈 && React Native 的项目开发。
+
+3.解决了什么问题？
+* className 的写法会让原本写css的写法十分难以接受
+* 如果通过导入css的方式 会导致变量泄露成为全局 需要配置webpack让其模块化
+* 以及上面提到的解决了原生 css 所不具备的能力，能够加速项目的快速开发
+
+4.安装
+`npm install --save styled-components`
+
+5.使用
+* 基本使用
+```
+import styled from 'styled-components'
+
+const Title = styled.h1`
+    font-size: 1.5em;
+    text-align: center;
+    color: palevioletred;
+`;
+// 相当于  const Title = styled.h1(xx)
+const Wrapper = styled.section`
+    padding: 4em;
+    background: papayawhip;
+`;
+render () {
+    return (
+        <Wrapper>
+            <Title>Hello styled-components</Title>
+        </Wrapper>
+    )
+}
+
+```
+* 传递props
+```
+const Button = styled.button`
+    background: ${props => props.primary ? 'palevioletred' : 'white'};
+    color: ${props => props.primary ? 'white' : 'palevioletred'};
+    font-size: 1em;
+    margin: 1em;
+    padding: 0.25em 1em;
+    border: 2px solid palevioletred;
+    border-radius: 3px;
+`
+render(
+    <div>
+        <Button>Normal</Button>
+        <Button primary>Primary</Button>
+    </div>
+);
+
+```
+在组件传递的props都可以在定义组件时获取到，这样就很容易实现定制某些风格组件
+
+* props高级用法
+设置默认值，在未设定必须传值的情况下我们会给一个默认值(defaultProps)
+```
+export default class ALbum extends React.Component {
+
+    constructor (props) {
+        super(props)
+        this.state = {
+            // 接收传递的值
+            imgSrc: props.imgSrc
+        }
+    }
+    
+    render () {
+        const {imgSrc} = this.state
+        return (
+            <Container imgSrc={imgSrc}>
+            </Container>
+        )
+    }
+}
+
+// 在这里是可以拿到props的 
+const Container = styled.div`
+    background-size: cover;
+    background-image: url(${props =>  props.imgSrc});
+    width: 100%;    
+    height: 300px;
+`
+
+// 当然没传值也没关系  我们设置默认值
+Container.defaultProps = {
+    imgSrc: Cover
+}
+
+```
+* 组件样式继承
+```
+const Button = styled.button`
+    color: palevioletred;
+    font-size: 1em;
+    margin: 1em;
+    padding: 0.25em 1em;
+    border: 2px solid palevioletred;
+    border-radius: 3px;
+`;
+const TomatoButton = Button.extend`
+    color: tomato;
+    border-color: tomato;
+`;
+// TomatoButton 部分样式继承自 Button 这种情况下不会生成两个class
+
+```
+
+#### Immutable.js
+1.什么是Immutable？
+Immutable Data 就是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个新的 Immutable 对象。
+
+Immutable 实现的原理是 Persistent Data Structure（持久化数据结构），也就是使用旧数据创建新数据时，要保证旧数据同时可用且不变。同时为了避免 deepCopy 把所有节点都复制一遍带来的性能损耗，Immutable 使用了Structural Sharing（结构共享），即如果对象树中一个节点发生变化，只修改这个节点和受它影响的父节点，其它节点则进行共享。
+
+2.优点
+* 降低 Mutable 带来的复杂度
+共享的可变状态是万恶之源，举个简单的例子就是js中的引用赋值：
+```
+var obj = { a: 1 };
+var copy_obj = obj;
+copy_obj.a = 2;
+console.log(obj.a); // 2
+
+```
+引用赋值虽然可以节省内存，但当应用复杂之后，可变状态往往会变成噩梦，通常一般的做法是使用shallowCopy或者deepCopy来避免被修改，但这样造成了CPU和内存的消耗，不过Immulate可以很好地解决这些问题。
+* 节省内存空间
+上面提到了结构共享，Immutable.js 使用这种方式会尽量复用内存，甚至以前使用的对象也可以再次被复用。没有被引用的对象会被垃圾回收。
+```
+import { Map } from 'immutable';
+let a = Map({
+  select: 'users',
+  filter: Map({ name: 'Cam' })
+})
+let b = a.set('select', 'people');
+
+a === b; // false
+a.get('filter') === b.get('filter'); // true
+
+```
+上面 a 和 b 共享了没有变化的 filter 节点。
+* Undo/Redo，Copy/Paste，随意穿越！
+因为每次数据都是不一样的，只要把这些数据放到一个数组里储存起来，想回退到哪里就拿出对应数据即可，很容易开发出撤销重做这种功能。
+* 拥抱函数式编程
+Immutable（持久化数据结构）本身就是函数式编程中的概念。函数式编程关心数据的映射，命令式编程关心解决问题的步骤，纯函数式编程比面向对象更适用于前端开发。因为只要输入一致，输出必然一致，这样开发的组件更易于调试和组装。
+
+3.缺点
+* 容易与原生对象混
+主要是Immutable的API设计的和原生对象类似，容易混淆操作。例如其中Map和List的操作：
+```
+// Immutable
+const map = Map({ a: 1, b: 2 });
+const list = List([1,2,3]);
+
+// 原生js
+const obj = { a: 1, b: 2 };
+const arry = [1,2,3];
+
+// 取值方式对比
+console.log(map.get('a'));
+console.log(list.get(0));
+console.log(obj.a);
+console.log(arry[0]);
+
+```
+
+4.更多
+参考文档：https://www.jianshu.com/p/0fa8c7456c15
+
+### react相关概念
 
 #### react生命周期
 **定义**
